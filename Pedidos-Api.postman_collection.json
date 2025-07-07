@@ -1,11 +1,34 @@
 {
 	"info": {
 		"_postman_id": "7a3e2ce1-1410-4e7f-8626-e0995dbe5f27",
-		"name": "Pedidos Api",
+		"name": "📦 Pedidos API - NestJS + PostgreSQL",
+		"description": "API completa para gestión de usuarios, categorías, productos y pedidos.\n\n🔧 Variables necesarias:\n- {{base_url}}: http://localhost:3000\n- {{token}}: JWT token obtenido del login\n\n📋 Orden de uso:\n1. Auth → Register/Login\n2. Categorías → Crear categorías\n3. Productos → Crear productos\n4. Pedidos → Crear y gestionar pedidos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39826908",
 		"_collection_link": "https://kuenteco.postman.co/workspace/KuenteCO-Workspace~970c5daf-2edb-4c5d-8e8d-7fd78229512b/collection/39826908-7a3e2ce1-1410-4e7f-8626-e0995dbe5f27?action=share&source=collection_link&creator=39826908"
 	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	],
 	"item": [
 		{
 			"name": "Categorias",
