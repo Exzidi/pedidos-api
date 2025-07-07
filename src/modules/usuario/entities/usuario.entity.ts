@@ -20,7 +20,7 @@ export class Usuario {
   email: string;
 
   @Column()
-  @Exclude() // ✅ Oculta el password en las respuestas
+  @Exclude()
   password: string;
 
   @CreateDateColumn()

@@ -1,17 +1,121 @@
 # 📦 Pedidos API – Backend con NestJS + PostgreSQL
 
-API RESTful completa para gestionar usuarios, productos, categorías y pedidos. Utiliza autenticación JWT y sigue buenas prácticas de desarrollo backend con NestJS.
+API RESTful completa para gestionar usuarios, productos, categorías y pedidos. Utiliza autenticación JWT y sigue buenas prácticas de desarrollo backend con NestJS, implementando una arquitectura modular escalable.
 
 ---
 
-## 🚀 Tecnologías utilizadas
+## 🏗️ Arquitectura del Proyecto
 
-- **NestJS** – Framework Node.js para aplicaciones escalables
-- **TypeORM** – ORM para PostgreSQL
-- **PostgreSQL** – Base de datos relacional
-- **JWT** – Autenticación con tokens
-- **bcrypt** – Hash de contraseñas
-- **Docker** – (opcional) Para levantar la base de datos
+Este proyecto sigue una **arquitectura modular** basada en los principios de NestJS:
+
+- **Patrón Módulo-Controlador-Servicio**: Separación clara de responsabilidades
+- **Inyección de Dependencias**: Gestión automática de dependencias con decoradores
+- **Guards y Middleware**: Sistema de autenticación y autorización con JWT
+- **DTOs y Validación**: Validación de datos con class-validator
+- **TypeORM**: ORM con decoradores y relaciones automáticas
+- **Transformers**: Serialización de datos con class-transformer
+
+### Estructura Modular
+
+```
+src/
+├── auth/                    # Módulo de autenticación
+│   ├── auth.controller.ts   # Endpoints de login/register
+│   ├── auth.service.ts      # Lógica de autenticación
+│   ├── auth.module.ts       # Configuración del módulo
+│   ├── dto/                 # DTOs de autenticación
+│   └── strategies/          # Estrategias de Passport
+├── modules/
+│   ├── usuario/             # Gestión de usuarios
+│   ├── categoria/           # Gestión de categorías
+│   ├── producto/            # Gestión de productos
+│   └── pedido/              # Gestión de pedidos
+├── main.ts                  # Punto de entrada
+└── app.module.ts           # Módulo principal
+```
+
+---
+
+## 🗃️ Modelo Entidad-Relación (ERD)
+
+```
+┌─────────────────┐       ┌─────────────────┐
+│     Usuario     │       │    Categoria    │
+├─────────────────┤       ├─────────────────┤
+│ id (PK)         │       │ id (PK)         │
+│ nombre          │       │ nombre          │
+│ email (unique)  │       │ descripcion     │
+│ password        │       └─────────────────┘
+│ creadoEn        │                │
+└─────────────────┘                │
+         │                         │
+         │ 1:N                     │ 1:N
+         │                         │
+         ▼                         ▼
+┌─────────────────┐       ┌─────────────────┐
+│     Pedido      │       │    Producto     │
+├─────────────────┤       ├─────────────────┤
+│ id (PK)         │       │ id (PK)         │
+│ fecha           │       │ nombre          │
+│ total           │       │ precio          │
+│ usuario_id (FK) │       │ categoria_id(FK)│
+└─────────────────┘       └─────────────────┘
+         │                         │
+         │ 1:N                     │ N:1
+         │                         │
+         ▼                         ▼
+┌─────────────────┐       ┌─────────────────┐
+│  DetallePedido  │───────│    Producto     │
+├─────────────────┤   N:1 │   (referencia)  │
+│ id (PK)         │       └─────────────────┘
+│ cantidad        │
+│ precio_unitario │
+│ pedido_id (FK)  │
+│ producto_id(FK) │
+└─────────────────┘
+```
+
+### Relaciones:
+
+- **Usuario → Pedido**: Un usuario puede tener múltiples pedidos (1:N)
+- **Categoria → Producto**: Una categoría puede tener múltiples productos (1:N)
+- **Pedido → DetallePedido**: Un pedido puede tener múltiples detalles (1:N)
+- **Producto → DetallePedido**: Un producto puede estar en múltiples detalles (1:N)
+
+---
+
+## 🚀 Tecnologías y Versiones
+
+### Core Framework
+- **NestJS**: `^11.0.1` – Framework Node.js para aplicaciones escalables
+- **TypeScript**: `^5.7.3` – Superset de JavaScript con tipado estático
+- **Node.js**: Compatible con versiones LTS
+
+### Base de Datos
+- **PostgreSQL**: `^8.16.3` (driver pg)
+- **TypeORM**: `^0.3.24` – ORM con decoradores y migraciones
+- **MySQL**: `^3.14.1` (soporte adicional)
+- **SQL Server**: `^11.0.1` (soporte adicional)
+
+### Autenticación y Seguridad
+- **JWT**: `^11.0.0` – Tokens de autenticación
+- **Passport**: `^0.7.0` – Middleware de autenticación
+- **bcrypt**: `^6.0.0` – Hash de contraseñas
+
+### Validación y Transformación
+- **class-validator**: `^0.14.2` – Validación de DTOs
+- **class-transformer**: `^0.5.1` – Transformación de objetos
+
+### Herramientas de Desarrollo
+- **ESLint**: `^9.18.0` – Linter de código
+- **Prettier**: `^3.4.2` – Formateador de código
+- **Jest**: `^29.7.0` – Framework de testing
+- **SWC**: `^1.10.7` – Compilador rápido
+
+### Configuración
+- **@nestjs/config**: `^4.0.2` – Gestión de variables de entorno
+- **reflect-metadata**: `^0.2.2` – Soporte para decoradores
+- **rxjs**: `^7.8.1` – Programación reactiva
 
 ---
 
@@ -204,9 +308,3 @@ src/
 ## ✍ Autor
 
 Desarrollado por **Alejo** como entrega académica del backend de pedidos usando NestJS.
-
----
-
-## 📝 Licencia
-
-Este proyecto se distribuye bajo licencia académica. Basado en [NestJS](https://nestjs.com).
